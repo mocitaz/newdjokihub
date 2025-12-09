@@ -19,8 +19,8 @@
                     <div class="flex-shrink-0 w-full md:w-auto text-center md:text-left">
                         <div class="relative inline-block group">
                             <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white p-1 shadow-sm ring-1 ring-gray-100">
-                                @if($user->profile_photo)
-                                <img src="{{ Storage::url($user->profile_photo) }}" class="w-full h-full rounded-xl object-cover bg-gray-50">
+                                @if($user->profile_photo_url)
+                                <img src="{{ $user->profile_photo_url }}" class="w-full h-full rounded-xl object-cover bg-gray-50">
                                 @else
                                 <div class="w-full h-full rounded-xl bg-gray-100 flex items-center justify-center text-3xl font-bold text-gray-400">
                                     {{ strtoupper(substr($user->name, 0, 1)) }}
@@ -72,7 +72,7 @@
                                     @if($user->university)
                                         <div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-gray-50 border border-gray-100">
                                             @if($user->university->logo_url)
-                                             <img src="{{ str_starts_with($user->university->logo_url, 'logos/') ? Storage::url($user->university->logo_url) : $user->university->logo_url }}" class="w-3 h-3 object-contain">
+                                             <img src="{{ asset($user->university->logo_url) }}" class="w-3 h-3 object-contain">
                                             @endif
                                             <span class="text-[10px] font-bold text-gray-600 truncate max-w-[120px]">{{ $user->university->acronym ?? $user->university->name }}</span>
                                         </div>
@@ -159,7 +159,7 @@
                             <h3 class="text-xs font-bold text-gray-900 uppercase tracking-wider mb-3">Education</h3>
                             <div class="flex items-start gap-3">
                                 @if($user->university && $user->university->logo_url)
-                                    <img src="{{ str_starts_with($user->university->logo_url, 'logos/') ? Storage::url($user->university->logo_url) : $user->university->logo_url }}" class="w-10 h-10 object-contain p-1 border border-gray-200 rounded-lg bg-white">
+                                    <img src="{{ asset($user->university->logo_url) }}" class="w-10 h-10 object-contain p-1 border border-gray-200 rounded-lg bg-white">
                                 @else
                                     <div class="w-10 h-10 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center text-gray-400">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"></path></svg>
