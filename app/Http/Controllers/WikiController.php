@@ -60,7 +60,14 @@ class WikiController extends Controller
         if ($request->hasFile('cover_image')) {
             $file = $request->file('cover_image');
             $filename = 'wiki_' . time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
-            $coverImagePath = $file->storeAs('wiki-covers', $filename, 'public');
+            
+            $destinationPath = public_path('assets/wiki-covers');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            
+            $file->move($destinationPath, $filename);
+            $coverImagePath = 'assets/wiki-covers/' . $filename;
         }
 
         WikiArticle::create([
@@ -125,13 +132,29 @@ class WikiController extends Controller
         $coverImagePath = $article->cover_image;
         if ($request->hasFile('cover_image')) {
             // Delete old image if exists
-            if ($article->cover_image && \Illuminate\Support\Facades\Storage::disk('public')->exists($article->cover_image)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($article->cover_image);
+            if ($article->cover_image) {
+                // Handle legacy paths just in case, or new assets paths
+                $oldPath = public_path($article->cover_image); 
+                // If path doesn't start with assets/ but is in DB, try prefixing (legacy support)
+                if (!str_contains($article->cover_image, 'assets/')) {
+                    $oldPath = public_path('assets/' . $article->cover_image);
+                }
+                
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
             }
             
             $file = $request->file('cover_image');
             $filename = 'wiki_' . time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
-            $coverImagePath = $file->storeAs('wiki-covers', $filename, 'public');
+            
+            $destinationPath = public_path('assets/wiki-covers');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            
+            $file->move($destinationPath, $filename);
+            $coverImagePath = 'assets/wiki-covers/' . $filename;
         }
 
         $article->update([

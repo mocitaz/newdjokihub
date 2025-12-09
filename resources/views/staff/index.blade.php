@@ -151,14 +151,10 @@
                         @if($s->university)
                         <div class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-gray-50 rounded border border-gray-200">
                              @if($s->university->logo_url)
-                                @php
-                                    $univLogoUrl = str_starts_with($s->university->logo_url, 'logos/') 
-                                        ? Storage::url($s->university->logo_url) 
-                                        : $s->university->logo_url;
-                                @endphp
-                                <img src="{{ $univLogoUrl }}" alt="" class="w-3 h-3 object-contain" onerror="this.onerror=null; this.style.display='none';">
-                            @endif
-                            <span class="text-[10px] font-semibold text-gray-700 uppercase">{{ $s->university->acronym ?? Str::limit($s->university->name, 15) }}</span>
+                            <div class="h-6 w-6 rounded-md bg-white border border-gray-100 flex items-center justify-center p-0.5" title="{{ $s->university->name }}">
+                                <img src="{{ $s->university->logo_url }}" class="w-full h-full object-contain">
+                            </div>
+                            @endif<span class="text-[10px] font-semibold text-gray-700 uppercase">{{ $s->university->acronym ?? Str::limit($s->university->name, 15) }}</span>
                         </div>
                         @endif
                     </div>
@@ -261,12 +257,7 @@
                             @if($s->university)
                             <div class="flex items-center gap-2">
                                 @if($s->university->logo_url)
-                                 @php
-                                    $univLogoUrl = str_starts_with($s->university->logo_url, 'logos/') 
-                                        ? Storage::url($s->university->logo_url) 
-                                        : $s->university->logo_url;
-                                @endphp
-                                <img src="{{ $univLogoUrl }}" alt="" class="w-4 h-4 object-contain opacity-80" onerror="this.onerror=null; this.style.display='none';">
+                                <img src="{{ $s->university->logo_url }}" alt="" class="w-4 h-4 object-contain opacity-80">
                                 @endif
                                 <span class="text-xs font-medium text-gray-700">{{ $s->university->acronym ?? Str::limit($s->university->name, 20) }}</span>
                             </div>

@@ -73,13 +73,23 @@ class WikiArticle extends Model
     public function getCoverImageUrlAttribute()
     {
         if ($this->cover_image) {
-            // 1. If it's already a full URL or explicit asset path
-            if (str_contains($this->cover_image, 'assets/') || str_starts_with($this->cover_image, 'http')) {
-                return asset($this->cover_image);
+            // 1. If it's already a full URL
+            if (str_starts_with($this->cover_image, 'http')) {
+                return $this->cover_image;
             }
             
-            // 2. Legacy: Prefix with assets/
-            return asset('assets/' . $this->cover_image);
+            // 2. Normalize path to assets/
+            $path = $this->cover_image;
+            if (!str_contains($path, 'assets/')) {
+                $path = 'assets/' . $path;
+            }
+
+            // 3. Strict existence check to prevent 404
+            if (file_exists(public_path($path))) {
+                return asset($path);
+            }
+            
+            return null;
         }
         
         return null;

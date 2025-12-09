@@ -23,11 +23,25 @@ class Bank extends Model
     {
         if (!$value) return null;
         
-        // If it's the old path (logos/...), prefix it with assets/
-        if (str_starts_with($value, 'logos/')) {
-            return 'assets/' . $value;
+        // 1. If it's a full URL, return as is
+        if (str_starts_with($value, 'http')) {
+            return $value;
+        }
+
+        // 2. Normalize path to assets/
+        $path = $value;
+        if (str_starts_with($path, 'logos/')) {
+            $path = 'assets/' . $path;
+        } elseif (!str_contains($path, 'assets/')) {
+             // Fallback if just filename
+            $path = 'assets/logos/banks/' . $path; 
+        }
+
+        // 3. Check existence to prevent 404
+        if (file_exists(public_path($path))) {
+            return asset($path);
         }
         
-        return $value;
+        return null;
     }
 }

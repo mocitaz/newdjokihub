@@ -106,12 +106,7 @@
                         <span class="text-xs text-gray-500 font-medium">Bank</span>
                         <div class="flex items-center gap-2">
                              @if($staff->bank->logo_url)
-                             @php
-                                $bankLogoUrl = str_starts_with($staff->bank->logo_url, 'logos/') 
-                                    ? Storage::url($staff->bank->logo_url) 
-                                    : $staff->bank->logo_url;
-                            @endphp
-                            <img src="{{ $bankLogoUrl }}" class="w-4 h-4 object-contain" alt="">
+                            <img src="{{ $staff->bank->logo_url }}" class="w-4 h-4 object-contain" alt="">
                             @endif
                             <span class="text-sm font-bold text-gray-900">{{ $staff->bank->name }}</span>
                         </div>
@@ -146,12 +141,7 @@
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center border border-gray-100 flex-shrink-0">
                             @if($staff->university->logo_url)
-                                @php
-                                    $univLogoUrl = str_starts_with($staff->university->logo_url, 'logos/') 
-                                        ? Storage::url($staff->university->logo_url) 
-                                        : $staff->university->logo_url;
-                                @endphp
-                                <img src="{{ $univLogoUrl }}" alt="" class="w-5 h-5 object-contain">
+                                <img src="{{ $staff->university->logo_url }}" alt="" class="w-5 h-5 object-contain">
                             @else
                                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                             @endif
