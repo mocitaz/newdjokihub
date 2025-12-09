@@ -54,7 +54,7 @@
                         </div>
                         <div class="w-full md:w-2/3 space-y-5">
                             <!-- Avatar Upload -->
-                            <div class="flex items-center gap-5" x-data="{ photoPreview: '{{ $user->profile_photo ? Storage::url($user->profile_photo) : null }}' }">
+                            <div class="flex items-center gap-5" x-data="{ photoPreview: '{{ $user->profile_photo_url }}' }">
                                 <div class="relative w-16 h-16 flex-shrink-0 group">
                                     <template x-if="photoPreview">
                                         <img :src="photoPreview" class="w-full h-full rounded-full object-cover border border-gray-200 shadow-sm">

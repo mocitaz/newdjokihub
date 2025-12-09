@@ -107,7 +107,7 @@
                         
                          @if($wiki->cover_image)
                         <div class="rounded-2xl overflow-hidden shadow-sm border border-gray-100 mb-10 w-full aspect-video relative">
-                            <img src="{{ Storage::url($wiki->cover_image) }}" alt="{{ $wiki->title }}" class="absolute inset-0 w-full h-full object-cover">
+                            <img src="{{ $wiki->cover_image_url }}" alt="{{ $wiki->title }}" class="absolute inset-0 w-full h-full object-cover">
                         </div>
                         @endif
                     </header>

@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="min-h-screen bg-white" x-data="{
-    imagePreview: '{{ $wiki->cover_image ? Storage::url($wiki->cover_image) : '' }}',
+    imagePreview: '{{ $wiki->cover_image_url }}',
     handleFileUpload(event) {
         const file = event.target.files[0];
         if (file) {

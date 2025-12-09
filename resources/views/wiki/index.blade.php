@@ -88,7 +88,7 @@
                     <!-- Background Image -->
                     <div class="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
                          @if($article->cover_image)
-                            <img src="{{ Storage::url($article->cover_image) }}" alt="{{ $article->title }}" class="h-full w-full object-cover">
+                            <img src="{{ $article->cover_image_url }}" alt="{{ $article->title }}" class="h-full w-full object-cover">
                         @else
                             <div class="h-full w-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500"></div>
                         @endif
@@ -130,7 +130,7 @@
             <a href="{{ route('wiki.show', $article->slug) }}" class="group relative flex flex-col overflow-hidden rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <div class="h-48 relative overflow-hidden bg-gray-100">
                      @if($article->cover_image)
-                        <img src="{{ Storage::url($article->cover_image) }}" alt="{{ $article->title }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="{{ $article->cover_image_url }}" alt="{{ $article->title }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
                     @else
                         <div class="h-full w-full bg-gradient-to-tr from-gray-200 to-gray-100 group-hover:from-blue-50 group-hover:to-purple-50 transition-colors"></div>
                         <div class="absolute inset-0 flex items-center justify-center text-gray-300 group-hover:text-blue-300 transition-colors">

@@ -66,4 +66,22 @@ class WikiArticle extends Model
     {
         $this->increment('views');
     }
+
+    /**
+     * Get cover image URL
+     */
+    public function getCoverImageUrlAttribute()
+    {
+        if ($this->cover_image) {
+            // 1. If it's already a full URL or explicit asset path
+            if (str_contains($this->cover_image, 'assets/') || str_starts_with($this->cover_image, 'http')) {
+                return asset($this->cover_image);
+            }
+            
+            // 2. Legacy: Prefix with assets/
+            return asset('assets/' . $this->cover_image);
+        }
+        
+        return null;
+    }
 }
