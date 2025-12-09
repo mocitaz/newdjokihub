@@ -104,10 +104,16 @@ class StaffController extends Controller
 
         // Handle profile photo upload
         if ($request->hasFile('profile_photo')) {
-            $photo = $request->file('profile_photo');
-            $filename = time() . '_' . $photo->getClientOriginalName();
-            $path = $photo->storeAs('profile-photos', $filename, 'public');
-            $data['profile_photo'] = $path;
+            $file = $request->file('profile_photo');
+            $filename = time() . '_' . $file->hashName();
+            
+            $destinationPath = public_path('assets/profile-photos');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $file->move($destinationPath, $filename);
+            $data['profile_photo'] = 'assets/profile-photos/' . $filename;
         }
 
         User::create($data);
@@ -237,13 +243,22 @@ class StaffController extends Controller
         if ($request->hasFile('profile_photo')) {
             // Delete old photo if exists
             if ($staff->profile_photo) {
-                Storage::disk('public')->delete($staff->profile_photo);
+                $oldPath = public_path($staff->profile_photo);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
             }
             
-            $photo = $request->file('profile_photo');
-            $filename = time() . '_' . $photo->getClientOriginalName();
-            $path = $photo->storeAs('profile-photos', $filename, 'public');
-            $updateData['profile_photo'] = $path;
+            $file = $request->file('profile_photo');
+            $filename = time() . '_' . $file->hashName();
+            
+            $destinationPath = public_path('assets/profile-photos');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $file->move($destinationPath, $filename);
+            $updateData['profile_photo'] = 'assets/profile-photos/' . $filename;
         }
 
         $staff->update($updateData);
@@ -259,6 +274,11 @@ class StaffController extends Controller
     {
         if ($staff->role !== 'staff') {
             abort(404);
+        }
+
+        // Delete profile photo if exists
+        if ($staff->profile_photo && file_exists(public_path($staff->profile_photo))) {
+             @unlink(public_path($staff->profile_photo));
         }
 
         $staff->delete();
