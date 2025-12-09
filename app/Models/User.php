@@ -190,21 +190,14 @@ class User extends Authenticatable
     public function getProfilePhotoUrlAttribute(): string
     {
         if ($this->profile_photo) {
-            // Check if it's already a full URL or asset path
-            if (file_exists(public_path($this->profile_photo))) {
+            // 1. If it's already a full URL (http...) or explicitly in assets/
+            if (str_contains($this->profile_photo, 'assets/') || str_starts_with($this->profile_photo, 'http')) {
                 return asset($this->profile_photo);
             }
             
-            // Migration: Check if file exists in assets folder (even if DB has old path)
-            // e.g. DB: profile-photos/img.jpg -> check assets/profile-photos/img.jpg
-            if (file_exists(public_path('assets/' . $this->profile_photo))) {
-                return asset('assets/' . $this->profile_photo);
-            }
-
-            // Fallback: Check for legacy storage path (if symlink exists)
-            if (file_exists(public_path('storage/' . $this->profile_photo))) {
-                return asset('storage/' . $this->profile_photo);
-            }
+            // 2. Legacy: If it's a relative path (e.g. "profile-photos/foo.jpg"), assume it's moved to assets/
+            // We skip file_exists check to avoid permission issues/false negatives on production
+            return asset('assets/' . $this->profile_photo);
         }
         
         // Default profile image path
