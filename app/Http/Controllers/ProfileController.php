@@ -80,14 +80,21 @@ class ProfileController extends Controller
             'profile_photo' => 'nullable|image|max:2048',
         ]);
 
-        // Handle Photo Upload
+        // Handle Photo Upload (Hostinger Shared Hosting Compatibility Mode)
         if ($request->hasFile('profile_photo')) {
-            // Delete old photo if exists
-            if ($user->profile_photo) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->profile_photo);
+            // Delete old photo if exists (Manual check since we bypass Storage facade)
+            $oldPath = public_path('storage/' . $user->profile_photo);
+            if ($user->profile_photo && file_exists($oldPath)) {
+                @unlink($oldPath);
             }
-            $path = $request->file('profile_photo')->store('profile-photos', 'public');
-            $user->profile_photo = $path;
+
+            // Direct upload to public/storage/profile-photos
+            $file = $request->file('profile_photo');
+            $filename = $file->hashName();
+            $file->move(public_path('storage/profile-photos'), $filename);
+
+            // Save path matching standard Laravel asset() format
+            $user->profile_photo = 'profile-photos/' . $filename;
         }
 
         // Update basic info
