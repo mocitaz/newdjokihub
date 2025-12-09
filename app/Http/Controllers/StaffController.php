@@ -27,6 +27,11 @@ class StaffController extends Controller
             ->orderBy('name', 'asc')
             ->paginate(15);
 
+        // Self-Healing: Recalculate stats for displayed staff to ensure accuracy on page load
+        foreach ($staff as $s) {
+            $s->recalculateStats();
+        }
+
         return view('staff.index', compact('staff'));
     }
 
@@ -142,6 +147,9 @@ class StaffController extends Controller
                 $query->orderBy('created_at', 'desc')->limit(10);
             }
         ]);
+
+        // Self-Healing: Ensure stats are up to date
+        $staff->recalculateStats();
 
         // Calculate leaderboard position
         $leaderboardPosition = User::where('role', 'staff')
