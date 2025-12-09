@@ -82,19 +82,28 @@ class ProfileController extends Controller
 
         // Handle Photo Upload (Hostinger Shared Hosting Compatibility Mode)
         if ($request->hasFile('profile_photo')) {
-            // Delete old photo if exists (Manual check since we bypass Storage facade)
-            $oldPath = public_path('storage/' . $user->profile_photo);
-            if ($user->profile_photo && file_exists($oldPath)) {
-                @unlink($oldPath);
+            // Delete old photo if exists (Manual check)
+            if ($user->profile_photo) {
+                // Check if it's the new assets path or old storage path
+                $oldPath = public_path($user->profile_photo); // Assuming DB stores 'assets/...'
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
             }
 
-            // Direct upload to public/storage/profile-photos
+            // Direct upload to public/assets/profile-photos
             $file = $request->file('profile_photo');
             $filename = $file->hashName();
-            $file->move(public_path('storage/profile-photos'), $filename);
+            
+            $destinationPath = public_path('assets/profile-photos');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $file->move($destinationPath, $filename);
 
             // Save path matching standard Laravel asset() format
-            $user->profile_photo = 'profile-photos/' . $filename;
+            $user->profile_photo = 'assets/profile-photos/' . $filename;
         }
 
         // Update basic info

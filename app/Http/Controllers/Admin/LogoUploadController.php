@@ -127,8 +127,8 @@ class LogoUploadController extends Controller
         ]);
 
         // Delete old logo if exists (Manual check)
-        if ($university->logo_url && str_starts_with($university->logo_url, 'logos/')) {
-            $oldPath = public_path('storage/' . $university->logo_url);
+        if ($university->logo_url) {
+            $oldPath = public_path($university->logo_url); // Assuming DB stores 'assets/...'
             if (file_exists($oldPath)) {
                 @unlink($oldPath);
             }
@@ -138,13 +138,13 @@ class LogoUploadController extends Controller
         $logo = $request->file('logo');
         $filename = 'university_' . $university->id . '_' . time() . '.' . $logo->getClientOriginalExtension();
         
-        $destinationPath = public_path('storage/logos/universities');
+        $destinationPath = public_path('assets/logos/universities');
         if (!file_exists($destinationPath)) {
             mkdir($destinationPath, 0755, true);
         }
         
         $logo->move($destinationPath, $filename);
-        $path = 'logos/universities/' . $filename;
+        $path = 'assets/logos/universities/' . $filename;
 
         // Update database
         $university->update([
@@ -154,7 +154,7 @@ class LogoUploadController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Logo berhasil diupload',
-            'logo_url' => asset('storage/' . $path)
+            'logo_url' => asset($path)
         ]);
     }
 
@@ -168,8 +168,8 @@ class LogoUploadController extends Controller
         ]);
 
         // Delete old logo if exists (Manual check)
-        if ($bank->logo_url && str_starts_with($bank->logo_url, 'logos/')) {
-            $oldPath = public_path('storage/' . $bank->logo_url);
+        if ($bank->logo_url) {
+            $oldPath = public_path($bank->logo_url);
             if (file_exists($oldPath)) {
                 @unlink($oldPath);
             }
@@ -179,13 +179,13 @@ class LogoUploadController extends Controller
         $logo = $request->file('logo');
         $filename = 'bank_' . $bank->id . '_' . time() . '.' . $logo->getClientOriginalExtension();
         
-        $destinationPath = public_path('storage/logos/banks');
+        $destinationPath = public_path('assets/logos/banks');
         if (!file_exists($destinationPath)) {
             mkdir($destinationPath, 0755, true);
         }
         
         $logo->move($destinationPath, $filename);
-        $path = 'logos/banks/' . $filename;
+        $path = 'assets/logos/banks/' . $filename;
 
         // Update database with relative path
         $bank->update([
@@ -195,7 +195,7 @@ class LogoUploadController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Logo berhasil diupload',
-            'logo_url' => asset('storage/' . $path)
+            'logo_url' => asset($path)
         ]);
     }
 
@@ -204,8 +204,8 @@ class LogoUploadController extends Controller
      */
     public function deleteUniversity(University $university)
     {
-        if ($university->logo_url && str_starts_with($university->logo_url, 'logos/')) {
-            $oldPath = public_path('storage/' . $university->logo_url);
+        if ($university->logo_url) {
+            $oldPath = public_path($university->logo_url);
             if (file_exists($oldPath)) {
                 @unlink($oldPath);
             }
@@ -224,8 +224,8 @@ class LogoUploadController extends Controller
      */
     public function deleteBank(Bank $bank)
     {
-        if ($bank->logo_url && str_starts_with($bank->logo_url, 'logos/')) {
-            $oldPath = public_path('storage/' . $bank->logo_url);
+        if ($bank->logo_url) {
+            $oldPath = public_path($bank->logo_url);
             if (file_exists($oldPath)) {
                 @unlink($oldPath);
             }
