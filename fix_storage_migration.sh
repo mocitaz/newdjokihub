@@ -1,52 +1,54 @@
 #!/bin/bash
 
-# DjokiHub2 Asset Migration Script for Hostinger
-# This script moves files from storage/app/public to public/assets/
-# to bypass symlink issues.
+# Fix Storage Migration Script for Hostinger
+# This script copies assets from the default Laravel storage path to the public assets path.
+# It automatically detects if it's running on a Hostinger-like structure (with public_html).
 
 echo "🚀 Starting Asset Migration..."
 
-# 1. Create target directories if they don't exist
-echo "📂 Creating directories..."
-mkdir -p public/assets/profile-photos
-mkdir -p public/assets/logos/universities
-mkdir -p public/assets/logos/banks
-mkdir -p public/assets/wiki-covers/
+# Determine Target Directory
+# On Hostinger, the web root is often ../public_html relative to the laravel project
+if [ -d "../public_html" ]; then
+    echo "🌍 Detected Hostinger/cPanel structure. Target is ../public_html/assets"
+    TARGET_DIR="../public_html/assets"
+else
+    echo "💻 Detected Local/Standard structure. Target is public/assets"
+    TARGET_DIR="public/assets"
+fi
 
-# 2. Copy Profile Photos
+# Create target directories
+echo "📂 Creating directories at $TARGET_DIR..."
+mkdir -p "$TARGET_DIR/profile-photos"
+mkdir -p "$TARGET_DIR/logos/universities"
+mkdir -p "$TARGET_DIR/logos/banks"
+mkdir -p "$TARGET_DIR/wiki-covers"
+
+# 1. Profile Photos
 if [ -d "storage/app/public/profile-photos" ]; then
-    echo "📸 Copying Profile Photos..."
-    cp -r storage/app/public/profile-photos/* public/assets/profile-photos/ 2>/dev/null || echo "   (No profile-photos found or empty)"
+    echo "📸 Migrating Profile Photos..."
+    cp -r storage/app/public/profile-photos/* "$TARGET_DIR/profile-photos/" 2>/dev/null || echo "   (Empty or no files found)"
 else
-    echo "⚠️  storage/app/public/profile-photos does not exist."
+    echo "ℹ️  No storage/profile-photos found."
 fi
 
-# 3. Copy Logos
-if [ -d "storage/app/public/logos/universities" ]; then
-    echo "🎓 Copying University Logos..."
-    cp -r storage/app/public/logos/universities/* public/assets/logos/universities/ 2>/dev/null || echo "   (No university logos found)"
+# 2. University/Bank Logos
+if [ -d "storage/app/public/logos" ]; then
+    echo "🏦 Migrating Logos..."
+    cp -r storage/app/public/logos/* "$TARGET_DIR/logos/" 2>/dev/null || echo "   (Empty or no files found)"
 else
-    echo "⚠️  storage/app/public/logos/universities does not exist."
+    echo "ℹ️  No storage/logos found."
 fi
 
-if [ -d "storage/app/public/logos/banks" ]; then
-    echo "🏦 Copying Bank Logos..."
-    cp -r storage/app/public/logos/banks/* public/assets/logos/banks/ 2>/dev/null || echo "   (No bank logos found)"
-else
-    echo "⚠️  storage/app/public/logos/banks does not exist."
-fi
-
-# 4. Copy Wiki Covers
+# 3. Wiki Covers
 if [ -d "storage/app/public/wiki-covers" ]; then
-    echo "📚 Copying Wiki Covers..."
-    cp -r storage/app/public/wiki-covers/* public/assets/wiki-covers/ 2>/dev/null || echo "   (No wiki covers found)"
+    echo "📚 Migrating Wiki Covers..."
+    cp -r storage/app/public/wiki-covers/* "$TARGET_DIR/wiki-covers/" 2>/dev/null || echo "   (Empty or no files found)"
 else
-    echo "⚠️  storage/app/public/wiki-covers does not exist."
+    echo "ℹ️  No storage/wiki-covers found."
 fi
 
-# 5. Fix permissions
-echo "🔒 Fixing permissions..."
-chmod -R 755 public/assets
-
-echo "✅ Migration Complete!"
-echo "   Please clear your browser cache and refresh."
+echo "--------------------------------------------------------"
+echo "🎉 Migration Complete!"
+echo "✅ Assets have been copied to: $TARGET_DIR"
+echo "👉 HOSTINGER USERS: Please ensure '$TARGET_DIR' has 755 permissions."
+echo "--------------------------------------------------------"
