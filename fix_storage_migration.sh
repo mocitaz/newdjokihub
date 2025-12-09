@@ -7,12 +7,19 @@
 echo "🚀 Starting Asset Migration..."
 
 # Determine Target Directory
-# On Hostinger, the web root is often ../public_html relative to the laravel project
+# Debug info
+echo "📂 Current Directory: $(pwd)"
+echo "📂 Checking for public_html..."
+
 if [ -d "../public_html" ]; then
-    echo "🌍 Detected Hostinger/cPanel structure. Target is ../public_html/assets"
+    echo "🌍 Detected SIBLING ./../public_html. Target is ../public_html/assets"
     TARGET_DIR="../public_html/assets"
+elif [ -d "public_html" ]; then
+    echo "🌍 Detected CHILD ./public_html. Target is public_html/assets"
+    TARGET_DIR="public_html/assets"
 else
-    echo "💻 Detected Local/Standard structure. Target is public/assets"
+    echo "⚠️  Could not find 'public_html' in .. or ."
+    echo "💻 Defaulting to 'public/assets' (Standard Laravel)"
     TARGET_DIR="public/assets"
 fi
 
