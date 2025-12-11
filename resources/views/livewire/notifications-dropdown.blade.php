@@ -17,7 +17,7 @@
          x-transition:leave="transition ease-in duration-75"
          x-transition:leave-start="opacity-100 translate-y-0 scale-100"
          x-transition:leave-end="opacity-0 translate-y-2 scale-95"
-         class="absolute right-0 z-10 mt-2 w-80 origin-top-right rounded-2xl bg-white py-1 shadow-xl ring-1 ring-black/5 focus:outline-none" 
+         class="fixed inset-x-4 top-20 md:absolute md:inset-auto md:right-0 md:top-full z-50 mt-2 md:w-96 origin-top-right rounded-2xl bg-white py-1 shadow-2xl ring-1 ring-black/5 focus:outline-none" 
          role="menu" 
          aria-orientation="vertical" 
          aria-labelledby="user-menu-button" 
@@ -31,22 +31,22 @@
             @endif
         </div>
 
-        <div class="max-h-96 overflow-y-auto">
+        <div class="max-h-[60vh] md:max-h-96 overflow-y-auto overscroll-contain">
             @forelse($this->notifications as $notification)
                 <div class="block px-4 py-3 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0 {{ !$notification->read ? 'bg-blue-50/30' : '' }}">
                     <button wire:click="markAsRead({{ $notification->id }}, '{{ route('projects.show', $notification->project_id) }}')" class="w-full text-left flex gap-3">
                         <div class="flex-shrink-0 mt-1">
                             @if($notification->type === 'project_assigned')
                                 <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                    <x-icon.plus />
                                 </div>
                             @elseif($notification->type === 'project_completed')
                                 <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    <x-icon.check />
                                 </div>
                             @else
                                 <div class="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <x-icon.info />
                                 </div>
                             @endif
                         </div>

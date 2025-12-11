@@ -13,8 +13,29 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+use App\Models\User;
+use App\Models\Project;
+
 Route::get('/', function () {
-    return view('welcome');
+    $total_claims = Project::count();
+    $active_users = User::count();
+    $total_payouts = Project::sum('nett_budget');
+    $latest_members = User::latest()->take(5)->get();
+    
+    // Cool Real Data: Hall of Fame & Activity
+    $top_contributors = User::withCount('projects')->orderByDesc('projects_count')->take(3)->get();
+    $completed_projects = Project::where('status', 'completed')->with('assignees')->latest()->take(8)->get();
+    
+    // Testimonials (Real Users, Fake Quotes)
+    $testimonial_users = User::whereNotNull('profile_photo')->inRandomOrder()->take(3)->get();
+    if ($testimonial_users->count() < 3) {
+        $testimonial_users = User::inRandomOrder()->take(3)->get();
+    }
+    
+    // Avg Payout for Stats
+    $avg_payout = Project::where('status', 'completed')->avg('nett_budget') ?? 0;
+
+    return view('welcome', compact('total_claims', 'active_users', 'total_payouts', 'latest_members', 'top_contributors', 'completed_projects', 'testimonial_users', 'avg_payout'));
 })->name('home');
 
 Route::view('/privacy', 'pages.privacy')->name('privacy');
@@ -38,6 +59,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/projects/{project}/bast', [ProjectController::class, 'generateBast'])->name('projects.bast');
     Route::get('/projects/{project}/poc', [ProjectController::class, 'generatePoc'])->name('projects.poc');
     Route::post('/projects/{project}/complete', [ProjectController::class, 'complete'])->name('projects.complete');
+    Route::post('/projects/{project}/approve-bid', [ProjectController::class, 'approveBid'])->name('projects.approve-bid');
     Route::post('/projects/{project}/cancel', [ProjectController::class, 'cancel'])->name('projects.cancel');
     
     // Project Deliverables

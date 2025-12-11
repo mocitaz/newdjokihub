@@ -46,17 +46,17 @@
     <!-- Floating Filters -->
     <div class="sticky top-16 z-30 -mt-8 mb-12">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="flex flex-wrap items-center justify-center gap-2 p-2 rounded-full bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl max-w-fit mx-auto">
+            <div class="flex flex-nowrap md:flex-wrap items-center justify-start md:justify-center gap-2 p-2 rounded-full bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl max-w-full md:max-w-fit mx-auto overflow-x-auto no-scrollbar">
                 {{-- All Filter --}}
                 <a href="{{ route('wiki.index') }}" 
-                   class="px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 {{ !request('category') ? 'bg-black text-white shadow-lg scale-105' : 'bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
+                   class="flex-shrink-0 px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 {{ !request('category') ? 'bg-black text-white shadow-lg scale-105' : 'bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
                    All
                 </a>
                 
                 {{-- Dynamic Filters --}}
                 @foreach(['Engineering', 'Product', 'Design', 'Culture', 'Policy'] as $cat)
                 <a href="{{ route('wiki.index', ['category' => $cat]) }}" 
-                   class="px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 {{ request('category') == $cat ? 'bg-black text-white shadow-lg scale-105' : 'bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
+                   class="flex-shrink-0 px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 {{ request('category') == $cat ? 'bg-black text-white shadow-lg scale-105' : 'bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
                    {{ $cat }}
                 </a>
                 @endforeach

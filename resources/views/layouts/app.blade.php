@@ -89,6 +89,9 @@
                                 <a href="{{ route('activity-logs.index') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors group">
                                     <div class="flex-1 font-medium">Activity Logs</div>
                                 </a>
+                                <a href="{{ route('admin.assets.index') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors group">
+                                    <div class="flex-1 font-medium">System Assets</div>
+                                </a>
                                 @endif
                                 <a href="{{ route('wiki.index') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors group">
                                     <div class="flex-1 font-medium">Wiki Knowledge</div>
@@ -178,7 +181,7 @@
         </nav>
 
         <!-- Mobile Menu -->
-        <div x-data="{ mobileMenuOpen: false }" x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" 
+        <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" 
              x-transition:enter="transition ease-out duration-150" 
              x-transition:enter-start="opacity-0 -translate-y-1" 
              x-transition:enter-end="opacity-100 translate-y-0" 
@@ -187,6 +190,11 @@
              x-transition:leave-end="opacity-0 -translate-y-1"
              class="md:hidden fixed top-16 left-0 right-0 bg-white border-b border-gray-100 shadow-lg z-40" style="display: none;">
             <div class="px-4 py-3 space-y-1">
+                <!-- Mobile Search -->
+                <div class="mb-4 pb-4 border-b border-gray-100">
+                    @livewire('global-search')
+                </div>
+
                 <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors rounded-lg">
                     Dashboard
                 </a>
@@ -206,10 +214,36 @@
                 <a href="{{ route('activity-logs.index') }}" class="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors rounded-lg">
                     Activity Logs
                 </a>
+                <a href="{{ route('admin.assets.index') }}" class="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors rounded-lg">
+                    System Assets
+                </a>
                 @endif
                 <a href="{{ route('wiki.index') }}" class="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors rounded-lg">
                     Wiki
                 </a>
+
+                <!-- Mobile User Menu -->
+                <div class="border-t border-gray-100 my-2 pt-2">
+                    <div class="px-3 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                        <div class="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-[10px] text-gray-600 font-bold overflow-hidden">
+                            @if(auth()->user()->profile_photo_url)
+                                <img src="{{ auth()->user()->profile_photo_url }}" class="w-full h-full object-cover">
+                            @else
+                                {{ substr(auth()->user()->name, 0, 1) }}
+                            @endif
+                        </div>
+                        {{ auth()->user()->name }}
+                    </div>
+                    <a href="{{ route('profile.show') }}" class="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors rounded-lg">
+                        My Profile
+                    </a>
+                    <a href="{{ route('profile.edit') }}" class="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors rounded-lg">
+                        Settings
+                    </a>
+                    <button @click="logoutModalOpen = true" class="w-full text-left block px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors rounded-lg">
+                        Sign Out
+                    </button>
+                </div>
             </div>
         </div>
 

@@ -57,7 +57,7 @@
     </div>
     
     <!-- Modern Header -->
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-[10px] font-bold uppercase tracking-wider mb-2 shadow-sm">
                 <span class="relative flex h-2 w-2">
@@ -72,7 +72,19 @@
             <p class="text-sm text-gray-500 mt-1 font-medium">Manage your team's potential and track success</p>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
+            <!-- Search -->
+            <form action="{{ route('staff.index') }}" method="GET" class="w-full md:w-64">
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </span>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search staff..." 
+                           class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder-gray-400 shadow-sm">
+                </div>
+            </form>
+
+            <div class="flex items-center gap-2 w-full md:w-auto justify-between md:justify-start">
             <!-- View Toggle -->
             <div class="flex items-center bg-gray-100 p-1 rounded-lg border border-gray-200">
                 <button @click="viewMode = 'card'" 
@@ -105,6 +117,7 @@
             @endif
         </div>
     </div>
+</div>
 
     <!-- Modern Card View -->
     <div x-show="viewMode === 'card'" 

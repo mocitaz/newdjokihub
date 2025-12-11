@@ -109,19 +109,22 @@
                 
                 <div class="p-6 space-y-3">
                     <template x-for="(item, index) in deliverables" :key="index">
-                        <div class="flex items-start gap-3 group">
-                            <div class="flex-shrink-0 mt-3 text-gray-300 font-mono text-xs select-none" x-text="(index + 1) + '.'"></div>
-                            <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div>
+                        <div class="flex flex-col md:flex-row items-center md:items-start gap-3 p-3 md:p-0 bg-gray-50 md:bg-transparent border border-gray-100 md:border-0 rounded-xl md:rounded-none group transition-all hover:bg-gray-50 mb-3 md:mb-0">
+                            <div class="hidden md:block flex-shrink-0 mt-3 text-gray-300 font-mono text-xs select-none" x-text="(index + 1) + '.'"></div>
+                            
+                            <div class="w-full md:flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="relative">
+                                     <span class="md:hidden absolute top-2.5 left-3 text-xs font-mono text-gray-400" x-text="(index + 1) + '.'"></span>
                                     <input type="text" :name="'deliverables['+index+'][name]'" x-model="item.name" placeholder="Item Name *" required
-                                           class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-sm font-semibold text-gray-900 placeholder-gray-400">
+                                           class="w-full pl-8 md:pl-3 px-3 py-2 bg-white md:bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-sm md:shadow-none">
                                 </div>
                                 <div>
                                     <input type="text" :name="'deliverables['+index+'][description]'" x-model="item.description" placeholder="Description (Optional)"
-                                           class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-sm font-medium text-gray-900 placeholder-gray-400">
+                                           class="w-full px-3 py-2 bg-white md:bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-sm font-medium text-gray-900 placeholder-gray-400 shadow-sm md:shadow-none">
                                 </div>
                             </div>
-                            <button type="button" @click="removeDeliverable(index)" class="mt-2 text-gray-400 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-50">
+                            
+                            <button type="button" @click="removeDeliverable(index)" class="self-end md:self-start md:mt-2 text-gray-400 hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-red-50 bg-white md:bg-transparent border md:border-0 border-gray-200 shadow-sm md:shadow-none" title="Remove Item">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                             </button>
                         </div>

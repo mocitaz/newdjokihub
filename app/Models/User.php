@@ -112,6 +112,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Alias for assignedProjects for standard naming convention
+     */
+    public function projects()
+    {
+        return $this->assignedProjects();
+    }
+
+    /**
      * Get projects created by this user
      */
     public function createdProjects()
