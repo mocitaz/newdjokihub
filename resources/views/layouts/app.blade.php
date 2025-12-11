@@ -322,6 +322,9 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Profile Incomplete Reminder -->
+        @livewire('profile-incomplete-reminder')
     @else
         @yield('content')
     @endauth

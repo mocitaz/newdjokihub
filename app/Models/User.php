@@ -224,4 +224,29 @@ class User extends Authenticatable
         
         return '';
     }
+    /**
+     * Get list of missing profile fields with friendly names
+     *
+     * @return array
+     */
+    public function getMissingProfileFields(): array
+    {
+        $missing = [];
+        
+        // Basic Info
+        if (empty($this->phone)) $missing[] = 'Phone Number';
+        if (empty($this->domisili)) $missing[] = 'Domicile (City)';
+        if (empty($this->umur)) $missing[] = 'Age';
+        
+        // Education
+        if (empty($this->university_id)) $missing[] = 'University';
+        if (empty($this->program_study)) $missing[] = 'Study Program';
+        
+        // Banking (Crucial for payouts)
+        if (empty($this->bank_id)) $missing[] = 'Bank Name';
+        if (empty($this->bank_account_number)) $missing[] = 'Account Number';
+        if (empty($this->bank_account_name)) $missing[] = 'Account Holder Name';
+
+        return $missing;
+    }
 }

@@ -197,7 +197,13 @@
                          <div>
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-0.5">Status</p>
                             <h3 class="text-lg font-bold text-gray-900">Unassigned</h3>
-                            <p class="text-sm text-gray-500">Available in Claim Center</p>
+                            <p class="text-sm text-gray-500">
+                                @if($project->status === 'available')
+                                    Available in Claim Center
+                                @else
+                                    No staff assigned
+                                @endif
+                            </p>
                         </div>
                     </div>
                     @endforelse
@@ -206,8 +212,8 @@
                 @if($project->claimed_at)
                 <div class="text-right flex-shrink-0 bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-0.5">Claimed Date</p>
-                    <p class="text-sm font-bold text-gray-900">{{ $project->claimed_at->format('d M Y') }}</p>
-                    <p class="text-xs text-gray-500">{{ $project->claimed_at->format('H:i') }} WIB</p>
+                    <p class="text-sm font-bold text-gray-900">{{ \Carbon\Carbon::parse($project->claimed_at)->format('d M Y') }}</p>
+                    <p class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($project->claimed_at)->format('H:i') }} WIB</p>
                 </div>
                 @endif
             </div>

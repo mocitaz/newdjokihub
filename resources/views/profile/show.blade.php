@@ -205,8 +205,8 @@
                              @forelse($user->assignedProjects->take(5) ?? [] as $project)
                             <div class="group p-3 flex items-center justify-between border-b border-gray-100 last:border-0 hover:bg-white transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-xs font-bold text-gray-500 group-hover:border-gray-300">
-                                        {{ strtoupper(substr($project->name, 0, 1)) }}
+                                    <div class="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-400 group-hover:text-blue-600 group-hover:border-blue-100 transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
                                     </div>
                                     <div class="min-w-0">
                                         <p class="text-xs font-bold text-gray-900 truncate max-w-[150px] sm:max-w-xs">{{ $project->name }}</p>

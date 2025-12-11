@@ -22,13 +22,18 @@
                            class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder-gray-400 shadow-sm">
                 </div>
                 
-                <select wire:model.live="status" class="w-full sm:w-auto px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all shadow-sm text-gray-700 cursor-pointer">
-                    <option value="">All Status</option>
-                    <option value="available">Available</option>
-                    <option value="in_progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
-                </select>
+                <div class="relative w-full sm:w-auto">
+                    <select wire:model.live="status" class="w-full sm:w-auto pl-3 pr-10 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all shadow-sm text-gray-700 cursor-pointer appearance-none">
+                        <option value="">All Status</option>
+                        <option value="available">Available</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                </div>
             </div>
 
              <!-- View Toggle & Actions -->
@@ -115,19 +120,21 @@
                 <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <div class="flex items-center -space-x-2">
-                            @forelse($project->assignees->take(3) as $assignee)
-                                @if($assignee->profile_photo_url)
-                                    <img src="{{ $assignee->profile_photo_url }}" class="w-6 h-6 rounded-full object-cover ring-2 ring-white" title="{{ $assignee->name }}">
-                                @else
-                                    <div class="w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center text-white text-[8px] font-bold ring-2 ring-white" title="{{ $assignee->name }}">
-                                        {{ strtoupper(substr($assignee->name, 0, 1)) }}
-                                    </div>
-                                @endif
-                            @empty
+                            @if($project->assignees->count() > 0)
+                                @foreach($project->assignees->take(3) as $assignee)
+                                    @if($assignee->profile_photo_url)
+                                        <img src="{{ $assignee->profile_photo_url }}" class="w-6 h-6 rounded-full object-cover ring-2 ring-white" title="{{ $assignee->name }}">
+                                    @else
+                                        <div class="w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center text-white text-[8px] font-bold ring-2 ring-white" title="{{ $assignee->name }}">
+                                            {{ strtoupper(substr($assignee->name, 0, 1)) }}
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @else
                                 <span class="inline-flex items-center gap-1 text-xs font-medium text-gray-400 pl-2">
                                     <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> Unassigned
                                 </span>
-                            @endforelse
+                            @endif
                             @if($project->assignees->count() > 3)
                                 <div class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 text-[9px] font-bold ring-2 ring-white">
                                     +{{ $project->assignees->count() - 3 }}
