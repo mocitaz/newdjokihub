@@ -108,6 +108,10 @@
                                     <label class="block text-xs font-bold text-gray-700 mb-1.5">Location (City)</label>
                                     <input type="text" name="domisili" value="{{ old('domisili', $user->domisili) }}" class="w-full rounded-lg border-gray-200 focus:border-black focus:ring-black text-sm px-3.5 py-2.5 bg-gray-50 focus:bg-white transition-colors" placeholder="e.g. Jakarta">
                                 </div>
+                                <div class="col-span-2 md:col-span-1">
+                                    <label class="block text-xs font-bold text-gray-700 mb-1.5">Age</label>
+                                    <input type="number" name="umur" value="{{ old('umur', $user->umur) }}" class="w-full rounded-lg border-gray-200 focus:border-black focus:ring-black text-sm px-3.5 py-2.5 bg-gray-50 focus:bg-white transition-colors" placeholder="e.g. 25">
+                                </div>
                             </div>
 
                              <!-- Education Group -->
